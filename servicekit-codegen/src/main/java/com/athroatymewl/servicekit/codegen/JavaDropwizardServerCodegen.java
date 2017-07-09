@@ -1,30 +1,71 @@
-/*
 package com.athroatymewl.servicekit.codegen;
 
+import io.swagger.codegen.CliOption;
 import io.swagger.codegen.CodegenConfig;
+import io.swagger.codegen.CodegenConstants;
 import io.swagger.codegen.CodegenType;
 import io.swagger.codegen.languages.AbstractJavaCodegen;
 
 public class JavaDropwizardServerCodegen extends AbstractJavaCodegen implements CodegenConfig{
 
-	@Override
-	public CodegenType getTag() {
-		return null;
+	private static final String DEFAULT_LIBRARY = "jersey2";
+	private static final String DROPWIZARD_TEMPLATE_DIRECTORY_NAME = "JavaDropwizard";
+
+	public JavaDropwizardServerCodegen() {
+		super();
+
+		outputFolder = "generated-code/JavaJaxRS-Jersey";
+
+		apiTemplateFiles.put("apiService.mustache", ".java");
+		apiTemplateFiles.put("apiServiceImpl.mustache", ".java");
+		apiTemplateFiles.put("apiServiceFactory.mustache", ".java");
+		apiTestTemplateFiles.clear(); // TODO: add test template
+
+		// clear model and api doc template as this codegen
+		// does not support auto-generated markdown doc at the moment
+		//TODO: add doc templates
+		modelDocTemplateFiles.remove("model_doc.mustache");
+		apiDocTemplateFiles.remove("api_doc.mustache");
+
+		embeddedTemplateDir = templateDir = DROPWIZARD_TEMPLATE_DIRECTORY_NAME;
+
+		CliOption library = new CliOption(CodegenConstants.LIBRARY, "library template (sub-template) to use");
+
+		/*
+		supportedLibraries.put(LIBRARY_JERSEY1, "Jersey core 1.x");
+		supportedLibraries.put(LIBRARY_JERSEY2, "Jersey core 2.x");
+
+		library.setEnum(supportedLibraries);
+		*/
+		library.setDefault(DEFAULT_LIBRARY);
+
+		/*
+		cliOptions.add(library);
+		cliOptions.add(CliOption.newBoolean(SUPPORT_JAVA6, "Whether to support Java6 with the Jersey1/2 library."));
+		*/
 	}
 
 	@Override
-	public String getName() {
-		return null;
-	}
+    public CodegenType getTag() {
+        return CodegenType.SERVER;
+    }
 
-	@Override
-	public String getHelp() {
-		return null;
-	}
+    @Override
+    public String getName()
+    {
+        return "dropwizard";
+    }
+
+    @Override
+    public String getHelp()
+    {
+        return "Generates a JavaDropwizard Server application.";
+    }
 
 }
-*/
 
+
+/*
 
 package com.athroatymewl.servicekit.codegen;
 
@@ -44,9 +85,11 @@ public class JavaDropwizardServerCodegen extends AbstractJavaJAXRSServerCodegen 
     protected static final String LIBRARY_JERSEY1 = "jersey1";
     protected static final String LIBRARY_JERSEY2 = "jersey2";
 
+*/
     /**
      * Default library template to use. (Default:{@value #DEFAULT_LIBRARY})
      */
+/*
     public static final String DEFAULT_LIBRARY = LIBRARY_JERSEY2;
 
     public JavaDropwizardServerCodegen() {
@@ -81,13 +124,13 @@ public class JavaDropwizardServerCodegen extends AbstractJavaJAXRSServerCodegen 
     @Override
     public String getName()
     {
-        return "dropwizard"; // TODO should be renamed as "jaxrs-jersey"
+        return "dropwizard";
     }
 
     @Override
     public String getHelp()
     {
-        return "Generates a Java JAXRS Server application based on Jersey framework.";
+        return "Generates a JavaDropwizard Server application.";
     }
 
     @Override
@@ -193,3 +236,5 @@ public class JavaDropwizardServerCodegen extends AbstractJavaJAXRSServerCodegen 
     }
 
 }
+
+*/

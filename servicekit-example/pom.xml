@@ -56,7 +56,11 @@
 							-->
 
 							<!-- override the default library to jersey2 -->
+
+							<!--
+							/* not supportedJavaDropwizardzard codegen */
 							<library>jersey2</library>
+							-->
 						</configuration>
 					</execution>
 				</executions>
