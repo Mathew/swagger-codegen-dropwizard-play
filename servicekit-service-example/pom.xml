@@ -37,30 +37,24 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
+							<!--
 							<environmentVariables>
 								<models></models>
 								<apis></apis>
 							</environmentVariables>
+							-->
 
-							<inputSpec>servicekit-example/src/main/resources/swagger.yaml</inputSpec>
+							<inputSpec>servicekit-service-example/src/main/resources/swagger.yaml</inputSpec>
 							<language>com.athroatymewl.servicekit.codegen.JavaDropwizardServerCodegen</language>
 							<!-- pass any necessary config options -->
 							<configOptions>
 								<dateLibrary>joda</dateLibrary>
 							</configOptions>
 
-							<!--
-							<output>./${service.name}_service_api</output>
-							<apiPackage>${service.package.name}.${service.name}.api</apiPackage>
-							<modelPackage>${service.package.name}.${service.name}.models</modelPackage>
-							-->
+							<output>../servicekit-api-example</output>
+							<apiPackage>com.athroatymewl.servicekit.example.api</apiPackage>
+							<modelPackage>com.athroatymewl.servicekit.example.models</modelPackage>
 
-							<!-- override the default library to jersey2 -->
-
-							<!--
-							/* not supportedJavaDropwizardzard codegen */
-							<library>jersey2</library>
-							-->
 						</configuration>
 					</execution>
 				</executions>
@@ -75,7 +69,5 @@
 
 		</plugins>
 	</build>
-
-
 
 </project>

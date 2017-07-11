@@ -1,13 +1,11 @@
 package com.athroatymewl.servicekit.codegen;
 
-import io.swagger.codegen.CliOption;
-import io.swagger.codegen.CodegenConfig;
-import io.swagger.codegen.CodegenConstants;
-import io.swagger.codegen.CodegenType;
+import io.swagger.codegen.*;
 import io.swagger.codegen.languages.AbstractJavaCodegen;
 
 public class JavaDropwizardServerCodegen extends AbstractJavaCodegen implements CodegenConfig{
 
+	protected String implFolder = "src/main/java";
 	private static final String DEFAULT_LIBRARY = "jersey2";
 	private static final String DROPWIZARD_TEMPLATE_DIRECTORY_NAME = "JavaDropwizard";
 
@@ -15,17 +13,21 @@ public class JavaDropwizardServerCodegen extends AbstractJavaCodegen implements 
 		super();
 
 		outputFolder = "generated-code/JavaJaxRS-Jersey";
+		this.cliOptions.add(new CliOption("implFolder", "folder for generated implementation code"));
 
+		/*
 		apiTemplateFiles.put("apiService.mustache", ".java");
 		apiTemplateFiles.put("apiServiceImpl.mustache", ".java");
 		apiTemplateFiles.put("apiServiceFactory.mustache", ".java");
-		apiTestTemplateFiles.clear(); // TODO: add test template
+		*/
+		apiTestTemplateFiles.clear();
 
 		// clear model and api doc template as this codegen
 		// does not support auto-generated markdown doc at the moment
-		//TODO: add doc templates
 		modelDocTemplateFiles.remove("model_doc.mustache");
 		apiDocTemplateFiles.remove("api_doc.mustache");
+
+		writeOptional(outputFolder, new SupportingFile("pom.mustache", "", "pom.xml"));
 
 		embeddedTemplateDir = templateDir = DROPWIZARD_TEMPLATE_DIRECTORY_NAME;
 
@@ -61,6 +63,48 @@ public class JavaDropwizardServerCodegen extends AbstractJavaCodegen implements 
     {
         return "Generates a JavaDropwizard Server application.";
     }
+
+	@Override
+	public void processOpts() {
+		super.processOpts();
+
+		if(this.additionalProperties.containsKey("implFolder")) {
+			this.implFolder = (String)this.additionalProperties.get("implFolder");
+		}
+
+		// use default library if unset
+		/*
+		if (StringUtils.isEmpty(library)) {
+			setLibrary(DEFAULT_LIBRARY);
+		}
+		*/
+
+		if ( additionalProperties.containsKey(CodegenConstants.IMPL_FOLDER)) {
+			this.implFolder = (String) additionalProperties.get(CodegenConstants.IMPL_FOLDER);
+		}
+
+		if ("joda".equals(dateLibrary)) {
+			supportingFiles.add(new SupportingFile("JodaDateTimeProvider.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "JodaDateTimeProvider.java"));
+			supportingFiles.add(new SupportingFile("JodaLocalDateProvider.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "JodaLocalDateProvider.java"));
+		} else if ( dateLibrary.startsWith("java8") ) {
+			supportingFiles.add(new SupportingFile("OffsetDateTimeProvider.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "OffsetDateTimeProvider.java"));
+			supportingFiles.add(new SupportingFile("LocalDateProvider.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "LocalDateProvider.java"));
+		}
+
+		writeOptional(outputFolder, new SupportingFile("pom.mustache", "", "pom.xml"));
+		/*
+		writeOptional(outputFolder, new SupportingFile("README.mustache", "", "README.md"));
+		supportingFiles.add(new SupportingFile("ApiException.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "ApiException.java"));
+		supportingFiles.add(new SupportingFile("ApiOriginFilter.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "ApiOriginFilter.java"));
+		supportingFiles.add(new SupportingFile("ApiResponseMessage.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "ApiResponseMessage.java"));
+		supportingFiles.add(new SupportingFile("NotFoundException.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "NotFoundException.java"));
+		supportingFiles.add(new SupportingFile("jacksonJsonProvider.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "JacksonJsonProvider.java"));
+		supportingFiles.add(new SupportingFile("RFC3339DateFormat.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "RFC3339DateFormat.java"));
+		writeOptional(outputFolder, new SupportingFile("bootstrap.mustache", (implFolder + '/' + apiPackage).replace(".", "/"), "Bootstrap.java"));
+		writeOptional(outputFolder, new SupportingFile("web.mustache", ("src/main/webapp/WEB-INF"), "web.xml"));
+		supportingFiles.add(new SupportingFile("StringUtil.mustache", (sourceFolder + '/' + apiPackage).replace(".", "/"), "StringUtil.java"));
+		*/
+	}
 
 }
 
