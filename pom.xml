@@ -79,17 +79,15 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <!-- Only generate models -->
 						<id>model-execution</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <!--
 							<environmentVariables>
 								<models></models>
-								<apis></apis>
 							</environmentVariables>
-							-->
 
                             <inputSpec>./platform-spec/swagger.yaml</inputSpec>
                             <language>com.athroatymewl.servicekit.codegen.JavaDropwizardServerCodegen</language>
@@ -99,12 +97,11 @@
                             </configOptions>
 
                             <groupId>com.athroatymewl.servicekit.exampletwo.api</groupId>
-                            <artifactId>exampletwo-api</artifactId>
+                            <artifactId>exampletwo-models</artifactId>
                             <artifactVersion>1.0-SNAPSHOT</artifactVersion>
 
-                            <output>./servicekit--example2-api</output>
-                            <apiPackage>com.athroatymewl.servicekit.example.api</apiPackage>
-                            <modelPackage>com.athroatymewl.servicekit.example.models</modelPackage>
+                            <output>./servicekit--example2-models</output>
+                            <modelPackage>com.athroatymewl.servicekit.exampletwo.models</modelPackage>
 
                         </configuration>
                     </execution>
